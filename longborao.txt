@@ -1,0 +1,68 @@
+ 
+git add        //将工作区的文件提交到缓存区
+git commit -m "提交消息" file   //将缓存区的文件添加到分区  可以多次add 一次commit
+git diff       
+git reset --HEAD^   (HEAD^^ 回退两个版本 回退HEAD~100) 
+git log
+git reflog
+git checkout -- file   丢弃工作区中的修改
+git reset -- HEAD file  防区缓存区中的修改
+
+
+//分支
+git branch   查看分支
+git branch dev      创建新分支dev   =》git checkout -b dev
+git checkout dev   切换分支dev
+git branch -D/d dev 强制删除(删除)dev分支
+git merge dev       将dev分支合并到当前分支中，快进合并
+git merge --no-ff -m "merge with no-ff" dev   禁用fast-forward模式进行merge，合并后的历史有分支，能看出曾经做过合并，而fast-forward合并就看 不出来曾经做过合并
+git log --graph --pretty=oneline --abbrev-commit 查看分支合并日志
+
+//工作现场
+git stash 保存工作现场
+git stash list  列表展示stash
+git stash apply   回到工作现场 但是stash没有删除
+git stash drop    删除stash 
+git stash pop 回到工作现场，并删除stash内容删除了
+
+//标签
+git tag  产看标签
+git tag V0.9 22593ee 给历史版本打标签
+git show V0.9  查看标签V0.9的详细信息
+git tag -a V0.1 -m "version 0.1 first commit" 3628164  给标签添加信息
+git push origin V0.1  向远程库中推送一个本地标签
+git push origin --tags 可以推送全部本地为推送过的标签
+git tag -d V0.1 删除本地的标签
+git push origin ：refs/tags/V0.1 删除远程标签
+
+
+
+//远程库
+git remote -v 查看远程库
+git remote add origin git@github.com:longborao/learngit.git  //远程库的名字叫origin，将本地库和远程库关联
+ssh-keygen -t rsa -C "714759009@qq.com"  
+git push -u origin master  //推送master分支上的所有内容推送到origin远程库上
+git clone git@github.com:longborao/gitskills.git 或者 https://github.com/longborao/gitskills.git
+
+git remote -r 查看远程分支信息
+git push origin master:test 创建远程分支test
+git branch --set-upstream branch-name origin/branch-name。 创建本地分支和远程分支的链接关系
+git checkout -b test origin/test  在本地创建与远程分支对应的分支
+git push git push origin --delete test 删除远程分支
+
+远程分支的创建不能通过git branch 进行。而是在git  push的时候默认执行。
+有冲突，先pull下来，在本地合并，解决冲突，再推送
+
+Master 稳定分支，用来发布版本
+dev  开发分支
+bob  在dev分支上创建一个分支； 多员工合作，然后提交到dev，最后再提交到
+
+
+	1. 首先，可以试图用git push origin branch-name推送自己的修改；
+	2. 如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+	3. 如果合并有冲突，则解决冲突，并在本地提交；
+	4. 没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+
+如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream branch-name origin/branch-name。
+
+
